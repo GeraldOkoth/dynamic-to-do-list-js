@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       taskArray.forEach((taskText) => {
         addTask(taskText, false);
       });
-    }
+    }  
   }
 
   function addTask(taskText = "", save = true) {
