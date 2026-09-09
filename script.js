@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.getElementById("add-task-btn");
   const taskInput = document.getElementById("task-input");
-  const taskList = document.getElementById("task-list");
+  const taskList = document.getElementsByClassName("task-list")[0];
 
   let taskArray = [];
 
-//   load tasks from storage
+  //   load tasks from storage
   function loadTasks() {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       taskArray.forEach((taskText) => {
         addTask(taskText, false);
       });
-    }  
+    }
   }
 
   function addTask(taskText = "", save = true) {
@@ -26,10 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const listItem = document.createElement("li");
+    const span = document.createElement('span');
+    span.classList.add('task-text');
     listItem.textContent = taskText;
 
     const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
     removeBtn.classList.add("remove-btn");
     removeBtn.addEventListener("click", () => {
       taskList.removeChild(listItem);
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     listItem.appendChild(removeBtn);
+    listItem.appendChild(span);
     taskList.appendChild(listItem);
 
     if (save) {
