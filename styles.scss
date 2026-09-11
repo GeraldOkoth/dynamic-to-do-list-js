@@ -5,7 +5,7 @@
   margin: 0;
   box-sizing: border-box;
   list-style-type: none;
-  font-family: "poppins", sans-serif;
+  font-family: "poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html,
@@ -35,41 +35,37 @@ body {
     overflow-y: hidden;
     max-height: 90vh;
     border-radius: 8px;
-    max-width: 900px;
-    margin: 50px auto;
+    max-width: 52.25rem;
+    margin: 3.2rem auto;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     background-color: var(--card-color);
 
     h2 {
-      text-align: center;
+      text-align: left;
       color: var(--light-color);
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
     }
 
     .input-section {
-      border-radius: 8px;
       margin-bottom: 2rem;
       display: flex;
+      border-radius: inherit;
 
       #add-task-btn,
       #task-input {
         padding: 1rem 2rem;
         color: var(--light-color);
         outline: none;
-        border: 2px solid var(--border-color);
-        padding: 1rem 2rem;
-        border-radius: 5px;
+        border: 1px solid var(--border-color);
+        border-radius: inherit;
         background-color: transparent;
-        color: var(--light-color); 
+        color: var(--light-color);
 
-        &:hover {
-          border: 1.5px solid var(--border-color);
-        }
-
+        &:hover,
         &:focus {
-          border: 1.5px solid var(--border-color);
+          outline: 1.2px solid var(--border-color);
         }
       }
 
@@ -80,7 +76,6 @@ body {
       #add-task-btn {
         margin-left: 1rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
       }
     }
 
@@ -91,66 +86,65 @@ body {
       border-radius: inherit;
       background-color: var(--background-color);
 
-      .task-list {
-        li {
-          color: var(--light-color);
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--light-color);
+        margin: 1.5rem;
+        background-color: var(--card-color);
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        
+        .flex-1 {
           display: flex;
           align-items: center;
-          margin: 2rem;
-          background-color: var(--card-color);
-          padding: 1rem 2rem;
-          border-radius: 5px;
+          flex: 1;
+        }
 
-          .task-text {
-            flex: 1;
+        &::before {
+          content: "";
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          width: 1.2rem;
+          height: 1.2rem;
+          background-color: transparent;
+          font-size: 1.5rem;
+          margin-right: 1rem;
+          border: 2px solid var(--light-color);
+        }
+
+        &.unchecked{
+          content: "";
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          background-color: var(--success-color);
+        }
+
+        .remove-btn {
+          border: none;
+          position: relative;
+          cursor: pointer;
+          border-radius: 50%;
+          width: 1.6rem;
+          height: 1.6rem;
+          background-color: #ff6347;
+
+          &::after {
+            content: "×";
+            color: var(--light-color);
+            font-size: 1.2rem;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
           }
 
-          &::before {
-            content: "";
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            background-color: transparent;
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            border: 2px solid var(--light-color);
-          }
-
-          .checked {
-            content: "";
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            background-color: var(--success-color);
-            background-color: transparent;
-          }
-
-          .remove-btn {
-            cursor: pointer;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            justify-content: flex-end;
-            background-color: #ff6347;
-            border: none;
-            position: relative;
-
-            &::after {
-              content: "×";
-              color: var(--light-color);
-              font-size: 20px;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-            }
-
-            &:hover {
-              background-color: #d9534f;
-            }
+          &:hover {
+            background-color: #d9534f;
           }
         }
       }

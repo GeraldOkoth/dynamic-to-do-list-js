@@ -6,7 +6,7 @@
   margin: 0;
   box-sizing: border-box;
   list-style-type: none;
-  font-family: "poppins", sans-serif;
+  font-family: "poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html,
@@ -36,41 +36,37 @@ body .to-do-app {
   overflow-y: hidden;
   max-height: 90vh;
   border-radius: 8px;
-  max-width: 900px;
-  margin: 50px auto;
+  max-width: 52.25rem;
+  margin: 3.2rem auto;
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
   background-color: var(--card-color);
 }
 body .to-do-app h2 {
-  text-align: center;
+  text-align: left;
   color: var(--light-color);
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 body .to-do-app .input-section {
-  border-radius: 8px;
   margin-bottom: 2rem;
   display: flex;
+  border-radius: inherit;
 }
 body .to-do-app .input-section #add-task-btn,
 body .to-do-app .input-section #task-input {
   padding: 1rem 2rem;
   color: var(--light-color);
   outline: none;
-  border: 2px solid var(--border-color);
-  padding: 1rem 2rem;
-  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: inherit;
   background-color: transparent;
   color: var(--light-color);
 }
-body .to-do-app .input-section #add-task-btn:hover,
-body .to-do-app .input-section #task-input:hover {
-  border: 1.5px solid var(--border-color);
-}
-body .to-do-app .input-section #add-task-btn:focus,
+body .to-do-app .input-section #add-task-btn:hover, body .to-do-app .input-section #add-task-btn:focus,
+body .to-do-app .input-section #task-input:hover,
 body .to-do-app .input-section #task-input:focus {
-  border: 1.5px solid var(--border-color);
+  outline: 1.2px solid var(--border-color);
 }
 body .to-do-app .input-section #task-input {
   flex: 1;
@@ -78,7 +74,6 @@ body .to-do-app .input-section #task-input {
 body .to-do-app .input-section #add-task-btn {
   margin-left: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 body .to-do-app .tasks-section {
   overflow-y: scroll;
@@ -87,58 +82,59 @@ body .to-do-app .tasks-section {
   border-radius: inherit;
   background-color: var(--background-color);
 }
-body .to-do-app .tasks-section .task-list li {
-  color: var(--light-color);
+body .to-do-app .tasks-section .task-item {
   display: flex;
   align-items: center;
-  margin: 2rem;
+  justify-content: space-between;
+  color: var(--light-color);
+  margin: 1.5rem;
   background-color: var(--card-color);
   padding: 1rem 2rem;
   border-radius: 5px;
 }
-body .to-do-app .tasks-section .task-list li .task-text {
+body .to-do-app .tasks-section .task-item .flex-1 {
+  display: flex;
+  align-items: center;
   flex: 1;
 }
-body .to-do-app .tasks-section .task-list li::before {
+body .to-do-app .tasks-section .task-item::before {
   content: "";
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 1.2rem;
+  height: 1.2rem;
   background-color: transparent;
   font-size: 1.5rem;
   margin-right: 1rem;
   border: 2px solid var(--light-color);
 }
-body .to-do-app .tasks-section .task-list li .checked {
+body .to-do-app .tasks-section .task-item.unchecked {
   content: "";
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   background-color: var(--success-color);
-  background-color: transparent;
 }
-body .to-do-app .tasks-section .task-list li .remove-btn {
-  cursor: pointer;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  justify-content: flex-end;
-  background-color: #ff6347;
+body .to-do-app .tasks-section .task-item .remove-btn {
   border: none;
   position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #ff6347;
 }
-body .to-do-app .tasks-section .task-list li .remove-btn::after {
+body .to-do-app .tasks-section .task-item .remove-btn::after {
   content: "×";
   color: var(--light-color);
-  font-size: 20px;
+  font-size: 1.2rem;
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-body .to-do-app .tasks-section .task-list li .remove-btn:hover {
+body .to-do-app .tasks-section .task-item .remove-btn:hover {
   background-color: #d9534f;
-}/*# sourceMappingURL=styles.css.map */
+}
