@@ -2,10 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.getElementById("add-task-btn");
   const taskInput = document.getElementById("task-input");
   const taskList = document.querySelector(".task-list");
+  const allCaughtUp = document.querySelector(".all-caught-up");
 
   let taskArray = [];
 
-  //   load tasks from storage
+  // load tasks from storage
   function loadTasks() {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
@@ -16,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function toggleAllCaughtUp() {
+    const hasTasks = taskList.children.length > 0;
+    allCaughtUp.style.display = hasTasks ? "none" : "block";
+  }
+  
   function addTask(taskText = "", save = true) {
     if (!taskText) {
       taskText = taskInput.value.trim();
@@ -25,21 +31,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-
+    
+    const taskSection = document.querySelector(".tasks-section");
     const listItem = document.createElement("li");
-    const span = document.createElement('span');
-    const span1 = document.createElement('span');
-    const span2 = document.createElement('span');
-
+    const span = document.createElement("span");
+    const span1 = document.createElement("span");
+    const span2 = document.createElement("span");
+    
     listItem.classList.add("task-item");
-    span.classList.add('flex-1');
-    span1.classList.add('checked');
-    span2.classList.add('task-text');
+    span.classList.add("flex-1");
+    span1.classList.add("checked");
+    span2.classList.add("task-text");
     span2.textContent = taskText;
     span.appendChild(span1);
     span.appendChild(span2);
     listItem.appendChild(span);
-
+    
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("remove-btn");
     removeBtn.addEventListener("click", () => {
@@ -50,16 +57,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       localStorage.setItem("tasks", JSON.stringify(taskArray));
     });
-
+    
     listItem.appendChild(removeBtn);
     taskList.appendChild(listItem);
-
+    
     if (save) {
       taskArray.push(taskText);
       localStorage.setItem("tasks", JSON.stringify(taskArray));
     }
-
     taskInput.value = "";
+    
+  }
+
+  function toggleTaskCompletion(event) {
+    const taskItem = event.target.closest(".task-item");
+    const taskText = taskItem.querySelector(".task-text");
+    const checkedIcon = taskItem.querySelector(".checked");
+    checkedIcon.classList.toggle("checked");
+    taskText.classList.toggle("strikethrough");
   }
 
   addButton.addEventListener("click", () => addTask());
@@ -69,6 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       addTask();
     }
   });
+  taskList.addEventListener("click", function (event) {
+    if (event.target.classList.contains("task-text")) {
+      toggleTaskCompletion(event);
+    }
+  });
 
   loadTasks();
+  toggleAllCaughtUp();
 });
