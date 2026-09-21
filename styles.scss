@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 *,
 *::before,
 *::after {
@@ -26,6 +26,7 @@ body {
   --info-color: #17a2b8;
   --light-color: #f8f9fa;
   --border-color: #343a40;
+  --theme-secondaryTextColor: rgb(198, 216, 250);
 }
 
 body {
@@ -73,9 +74,9 @@ body {
     input {
       flex: 1;
     }
-    
+
     input::placeholder {
-      color: rgb(198, 216, 250);
+      color: var(--theme-secondaryTextColor);
     }
 
     #add-task-btn {
@@ -84,7 +85,7 @@ body {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: all .2s ease;
+      transition: all 0.2s ease;
 
       &:hover {
         transform: scale(1.01);
@@ -105,6 +106,63 @@ body {
     border-radius: inherit;
     background-color: var(--background-color);
 
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--card-color);
+      padding: 1rem 2rem;
+      margin: 1.5rem;
+      border-radius: 5px;
+      color: var(--theme-secondaryTextColor);
+
+      .task-item-left {
+        display: inherit;
+        gap: 1rem;
+      }
+
+      .toggleCheck {
+        margin-right: 0.8rem;
+        border-radius: 50%;
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+        background-color: transparent;
+        border: 2px solid var(--light-color);
+      }
+
+      .unchecked {
+        margin-right: 0.8rem;
+        border-radius: 50%;
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+        border: 2px solid var(--light-color);
+        content: "";
+        background-color: var(--success-color);
+      }
+
+      .strikethrough {
+        text-decoration: line-through;
+        color: var(--secondary-color);
+      }
+
+      .taskItemText {
+        cursor: pointer;
+      }
+
+      .task-item-right {
+        display: inherit;
+        gap: 2rem;
+      }
+
+      .updateBtn .fa-pen,
+      .deleteBtn .fa-trash {
+        color: var(--light-color);
+        cursor: pointer;
+      }
+    }
+
     .all-caught-up {
       display: flex;
       align-items: center;
@@ -116,85 +174,10 @@ body {
       margin: 2rem auto;
       background-color: #6c757d;
       border-radius: 8px;
-      
+
       .fa-circle-check {
         font-size: 3rem;
         margin: 1rem 0;
-      }
-    }
-
-
-
-
-    .task-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--light-color);
-      margin: 1.5rem;
-      background-color: var(--card-color);
-      padding: 1rem 2rem;
-      border-radius: 5px;
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      .flex-1 {
-        display: flex;
-        align-items: center;
-        flex: 1;
-      }
-
-      &::before {
-        content: "";
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        width: 1.2rem;
-        height: 1.2rem;
-        background-color: transparent;
-        font-size: 1.5rem;
-        margin-right: 1rem;
-        border: 2px solid var(--light-color);
-      }
-
-      &.unchecked {
-        content: "";
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        background-color: var(--success-color);
-      }
-
-      .strikethrough {
-        text-decoration: line-through;
-        color: var(--secondary-color);
-      }
-
-      .remove-btn {
-        border: none;
-        position: relative;
-        cursor: pointer;
-        border-radius: 50%;
-        width: 1.6rem;
-        height: 1.6rem;
-        background-color: #ff6347;
-
-        &::after {
-          content: "×";
-          color: var(--light-color);
-          font-size: 1.2rem;
-          position: absolute;
-          top: 40%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-
-        &:hover {
-          background-color: #d9534f;
-        }
       }
     }
   }

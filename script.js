@@ -1,95 +1,144 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const addButton = document.getElementById("add-task-btn");
   const taskInput = document.getElementById("task-input");
+  const addButton = document.getElementById("add-task-btn");
   const taskList = document.querySelector(".task-list");
-  const allCaughtUp = document.querySelector(".all-caught-up");
-
+  const emptyState = document.querySelector(".all-caught-up");
+  const storageKey = "tasks";
   let taskArray = [];
 
-  // load tasks from storage
-  function loadTasks() {
-    const storedTasks = localStorage.getItem("tasks");
-    if (storedTasks) {
-      taskArray = JSON.parse(storedTasks);
-      taskArray.forEach((taskText) => {
-        addTask(taskText, false);
-      });
-    }
+  function createTask(text) {
+    return {
+      id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+      text,
+      completed: false,
+    };
   }
 
-  function toggleAllCaughtUp() {
-    const hasTasks = taskList.children.length > 0;
-    allCaughtUp.style.display = hasTasks ? "none" : "block";
+  function saveTasks() {
+    localStorage.setItem(storageKey, JSON.stringify(taskArray));
   }
-  
-  function addTask(taskText = "", save = true) {
-    if (!taskText) {
-      taskText = taskInput.value.trim();
-      taskText = taskText.charAt(0).toUpperCase() + taskText.slice(1); // Capitalize the first letter
-      if (taskText === "") {
-        alert("Please enter a task!");
-        return;
-      }
-    }
-    
-    const taskSection = document.querySelector(".tasks-section");
+
+  function updateEmptyState() {
+    emptyState.hidden = taskArray.length > 0;
+  }
+
+  function renderTask(task) {
     const listItem = document.createElement("li");
-    const span = document.createElement("span");
-    const span1 = document.createElement("span");
-    const span2 = document.createElement("span");
-    
-    listItem.classList.add("task-item");
-    span.classList.add("flex-1");
-    span1.classList.add("checked");
-    span2.classList.add("task-text");
-    span2.textContent = taskText;
-    span.appendChild(span1);
-    span.appendChild(span2);
-    listItem.appendChild(span);
-    
-    const removeBtn = document.createElement("button");
-    removeBtn.classList.add("remove-btn");
-    removeBtn.addEventListener("click", () => {
-      taskList.removeChild(listItem);
-      const taskIndex = taskArray.indexOf(taskText);
-      if (taskIndex !== -1) {
-        taskArray.splice(taskIndex, 1);
-      }
-      localStorage.setItem("tasks", JSON.stringify(taskArray));
-    });
-    
-    listItem.appendChild(removeBtn);
+    listItem.className = "task-item";
+    listItem.dataset.taskId = task.id;
+
+    const taskItemLeft = document.createElement("span");
+    taskItemLeft.className = "task-item-left";
+    const toggleCheck = document.createElement("span");
+    toggleCheck.className = "toggleCheck";
+    toggleCheck.setAttribute("role", "button");
+    toggleCheck.setAttribute("aria-label", "Toggle task completion");
+    toggleCheck.classList.toggle("unchecked", task.completed);
+
+    const taskText = document.createElement("span");
+    taskText.className = "taskItemText";
+    taskText.textContent = task.text;
+    taskText.classList.toggle("strikethrough", task.completed);
+
+    const taskItemRight = document.createElement("span");
+    taskItemRight.className = "task-item-right";
+    const updateButton = document.createElement("span");
+    updateButton.className = "updateBtn";
+    updateButton.setAttribute("role", "button");
+    updateButton.setAttribute("aria-label", "Edit task");
+    updateButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+
+    const deleteButton = document.createElement("span");
+    deleteButton.className = "deleteBtn";
+    deleteButton.setAttribute("role", "button");
+    deleteButton.setAttribute("aria-label", "Delete task");
+    deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+    taskItemLeft.append(toggleCheck, taskText);
+    taskItemRight.append(updateButton, deleteButton);
+    listItem.append(taskItemLeft, taskItemRight);
     taskList.appendChild(listItem);
-    
-    if (save) {
-      taskArray.push(taskText);
-      localStorage.setItem("tasks", JSON.stringify(taskArray));
+  }
+
+  function renderTasks() {
+    taskList.replaceChildren();
+    taskArray.forEach(renderTask);
+    updateEmptyState();
+  }
+
+  function addTask() {
+    const text = taskInput.value.trim();
+    if (!text) {
+      alert("Please enter a task!");
+      return;
     }
+
+    const formattedText = text.charAt(0).toUpperCase() + text.slice(1);
+    taskArray.push(createTask(formattedText));
+    saveTasks();
+    renderTasks();
     taskInput.value = "";
-    
+    taskInput.focus();
   }
 
-  function toggleTaskCompletion(event) {
+  function loadTasks() {
+    try {
+      const storedTasks = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      if (!Array.isArray(storedTasks)) return;
+
+      taskArray = storedTasks
+        .map((task) =>
+          typeof task === "string"
+            ? createTask(task)
+            : {
+                id: task.id || createTask(task.text).id,
+                text: task.text,
+                completed: Boolean(task.completed),
+              },
+        )
+        .filter((task) => typeof task.text === "string" && task.text.trim());
+    } catch {
+      taskArray = [];
+    }
+  }
+
+  taskList.addEventListener("click", (event) => {
     const taskItem = event.target.closest(".task-item");
-    const taskText = taskItem.querySelector(".task-text");
-    const checkedIcon = taskItem.querySelector(".checked");
-    checkedIcon.classList.toggle("checked");
-    taskText.classList.toggle("strikethrough");
-  }
+    if (!taskItem) return;
 
-  addButton.addEventListener("click", () => addTask());
-  taskInput.addEventListener("keypress", function (event) {
+    const taskIndex = taskArray.findIndex(
+      (task) => task.id === taskItem.dataset.taskId,
+    );
+    if (taskIndex === -1) return;
+
+    if (event.target.closest(".toggleCheck, .taskItemText")) {
+      taskArray[taskIndex].completed = !taskArray[taskIndex].completed;
+    } else if (event.target.closest(".deleteBtn")) {
+      taskArray.splice(taskIndex, 1);
+    } else if (event.target.closest(".updateBtn")) {
+      const updatedText = prompt("Update task:", taskArray[taskIndex].text);
+      if (updatedText === null) return;
+
+      const trimmedText = updatedText.trim();
+      if (!trimmedText) return;
+      taskArray[taskIndex].text =
+        trimmedText.charAt(0).toUpperCase() + trimmedText.slice(1);
+    } else {
+      return;
+    }
+
+    saveTasks();
+    renderTasks();
+  });
+
+  addButton.addEventListener("click", addTask);
+  taskInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       addTask();
     }
   });
-  taskList.addEventListener("click", function (event) {
-    if (event.target.classList.contains("task-text")) {
-      toggleTaskCompletion(event);
-    }
-  });
 
   loadTasks();
-  toggleAllCaughtUp();
+  renderTasks();
 });
