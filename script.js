@@ -2,20 +2,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const taskInput = document.getElementById("task-input");
   const addButton = document.getElementById("add-task-btn");
   const taskList = document.querySelector(".task-list");
+  const taskSection = document.querySelector(".tasks-section");
   const storageKey = "tasks";
   let taskArray = [];
 
-  // checks whether the task list is empty and add image based on empty state
+  // Show a single empty-state message only when there are no tasks.
   function updateEmptyState() {
-    const emptyState = document.createElement("div");
-    const para = document.createElement("p");
-    emptyState.className = "all-caught-up";
+    let emptyState = taskSection.querySelector(".all-caught-up");
 
-    emptyState.textContent = '<i class="fa-regular fa-circle-check"></i>';
-    para.textContent = "All Caught Up!";
-    emptyState.appendChild(para);
-    taskList.appendChild(emptyState);
-    emptyState.style.display = taskArray.length > 0 ? "block" : "none";
+    if (!emptyState) {
+      emptyState = document.createElement("div");
+      emptyState.className = "all-caught-up";
+
+      const icon = document.createElement("i");
+      icon.className = "fa-regular fa-circle-check";
+      const message = document.createElement("p");
+      message.textContent = "All Caught Up!";
+
+      emptyState.append(icon, message);
+      taskSection.appendChild(emptyState);
+    }
+
+    // emptyState.hidden = taskArray.length !== 0;
   }
 
   function createTask(text) {
@@ -73,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTasks() {
     taskList.replaceChildren();
     taskArray.forEach(renderTask);
+    updateEmptyState();
   }
 
   function addTask() {
@@ -88,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTasks();
     taskInput.value = "";
     taskInput.focus();
-    updateEmptyState();
   }
 
   function loadTasks() {

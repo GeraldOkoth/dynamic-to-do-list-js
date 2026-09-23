@@ -171,6 +171,7 @@ body {
   margin: 2rem auto;
   background-color: #6c757d;
   border-radius: 8px;
+  display: none;
 }
 .to-do-app .tasks-section .all-caught-up .fa-circle-check {
   font-size: 3rem;
