@@ -131,15 +131,27 @@ body {
         border: 2px solid var(--light-color);
       }
 
-      .unchecked {
+      .checked {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--light-color);
         margin-right: 0.8rem;
+        padding: 2px;
+        background-color: var(--success-color);
         border-radius: 50%;
+        border: none;
         width: 1.2rem;
         height: 1.2rem;
+        font-size: 1rem;
         cursor: pointer;
-        border: 2px solid var(--light-color);
-        content: "";
-        background-color: var(--success-color);
+        position: relative;
+
+        &::before {
+          content: "\2713";
+          position: absolute;
+          font-weight: 900;
+        }
       }
 
       .strikethrough {

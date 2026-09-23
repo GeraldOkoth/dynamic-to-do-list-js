@@ -2,13 +2,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const taskInput = document.getElementById("task-input");
   const addButton = document.getElementById("add-task-btn");
   const taskList = document.querySelector(".task-list");
-  const emptyState = document.querySelector(".all-caught-up");
   const storageKey = "tasks";
   let taskArray = [];
 
+  // checks whether the task list is empty and add image based on empty state
+  function updateEmptyState() {
+    const emptyState = document.createElement("div");
+    const para = document.createElement("p");
+    emptyState.className = "all-caught-up";
+
+    emptyState.textContent = '<i class="fa-regular fa-circle-check"></i>';
+    para.textContent = "All Caught Up!";
+    emptyState.appendChild(para);
+    taskList.appendChild(emptyState);
+    emptyState.style.display = taskArray.length > 0 ? "block" : "none";
+  }
+
   function createTask(text) {
     return {
-      id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+      id: crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random()}`,
       text,
       completed: false,
     };
@@ -16,10 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function saveTasks() {
     localStorage.setItem(storageKey, JSON.stringify(taskArray));
-  }
-
-  function updateEmptyState() {
-    emptyState.hidden = taskArray.length > 0;
   }
 
   function renderTask(task) {
@@ -33,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleCheck.className = "toggleCheck";
     toggleCheck.setAttribute("role", "button");
     toggleCheck.setAttribute("aria-label", "Toggle task completion");
-    toggleCheck.classList.toggle("unchecked", task.completed);
+    toggleCheck.classList.toggle("checked", task.completed);
 
     const taskText = document.createElement("span");
     taskText.className = "taskItemText";
@@ -63,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTasks() {
     taskList.replaceChildren();
     taskArray.forEach(renderTask);
-    updateEmptyState();
   }
 
   function addTask() {
@@ -79,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTasks();
     taskInput.value = "";
     taskInput.focus();
+    updateEmptyState();
   }
 
   function loadTasks() {
