@@ -1,3 +1,4 @@
+@use "./responsive";
 @import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 *,
 *::before,
@@ -27,18 +28,21 @@ body {
   --light-color: #f8f9fa;
   --border-color: #343a40;
   --theme-secondaryTextColor: rgb(198, 216, 250);
+  --font-family: "Jost", sans-serif;
 }
 
 body {
   background: var(--background-color);
-  font-family: "Jost", sans-serif;
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-family);
 }
 
 .to-do-app {
   overflow-y: hidden;
   max-height: 90vh;
   border-radius: 8px;
-  max-width: 52.25rem;
+  width: 50vw;
   margin: 3.2rem auto;
   display: flex;
   flex-direction: column;
@@ -55,6 +59,7 @@ body {
     margin-bottom: 2rem;
     display: flex;
     border-radius: inherit;
+    gap: 0.5rem;
 
     #add-task-btn,
     #task-input {
@@ -65,6 +70,7 @@ body {
       border-radius: inherit;
       background-color: transparent;
       color: var(--light-color);
+      font-family: var(--font-family) !important;
 
       &:focus {
         outline: 1.2px solid var(--border-color);
@@ -80,12 +86,11 @@ body {
     }
 
     #add-task-btn {
-      margin-left: 1rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       transition: all 0.2s ease;
+      justify-content: center;
 
       &:hover {
         transform: scale(1.01);
