@@ -1,6 +1,7 @@
-@media screen and (max-width: 480px) {
+// responsive design - mobile
+@mixin phone() {
   .to-do-app {
-    min-width: 90vw;
+    flex-basis: 90%;
   }
   .input-section {
     flex-direction: column;
@@ -9,5 +10,11 @@
   #add-task-btn,
   #task-input {
     width: 100%;
+  }
+}
+// responsive design - tablet
+@mixin tablet() {
+  .to-do-app {
+    flex-basis: 80%;
   }
 }
